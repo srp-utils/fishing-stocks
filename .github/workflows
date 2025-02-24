@@ -1,0 +1,33 @@
+name: Update latest release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Create release artifact
+      run: |
+        mkdir -p ./moonloader/lib
+        curl -L "https://github.com/THE-FYP/SAMP.Lua/releases/download/v2.3.0/samp-lua-v2.3.0.zip" -o samp-lua.zip
+        unzip ./samp-lua.zip
+        mv ./samp ./moonloader/lib/samp
+        mv ./fishing-stocks.lua ./moonloader/
+        zip -r fishing-stocks.zip ./moonloader
+
+    - name: Update latest release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GH_TOKEN }}
+        tag: latest
+        file: ./fishing-stocks.zip
+        overwrite: true
+        body: ""
