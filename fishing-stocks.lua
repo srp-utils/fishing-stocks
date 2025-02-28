@@ -31,7 +31,7 @@ local PRICE_MAP = {
 };
 
 function main()
-  while sampIsLocalPlayerSpawned() and not isInitialized() do
+  while isSampAvailable() and sampIsLocalPlayerSpawned() and not isInitialized() do
     wait(5000);
     sampSendChat('/fish skill');
     wait(5000);
