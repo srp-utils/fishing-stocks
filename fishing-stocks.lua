@@ -91,7 +91,7 @@ end
 function hook.onServerMessage(color, text)
   if isSRP() then
     if color == 1790050303 and text:find('Навык рыбной ловли повышен до') then
-      currentSkill = tonumber(msg:match('.*Навык рыбной ловли повышен до {.*}(%d+)'));
+      currentSkill = tonumber(text:match('.*Навык рыбной ловли повышен до {.*}(%d+)'));
     end
   end
 end
