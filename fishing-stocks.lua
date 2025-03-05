@@ -55,10 +55,10 @@ function hook.onShowDialog(id, style, title, button, button2, text)
           line = line:gsub('Цена за кг', 'Цена за кг\t{FFFFFF}Выгода');
         end
 
-        local regexp = '([А-Яа-я -]+).*$(%d+%.?%d*)';
+        local regexp = '([А-Яа-я -]+).*$(%d+%.?%d*)\t{FFFFFF}(%d+)';
 
         if line:find(regexp) then
-          local name, currentPrice = line:match(regexp);
+          local name, currentPrice, weight = line:match(regexp);
           local u8name = u8:encode(name);
 
           if u8name and PRICE_MAP[u8name] then
@@ -67,7 +67,7 @@ function hook.onShowDialog(id, style, title, button, button2, text)
 
             line = line:gsub(
               '$' .. currentPrice, 
-              string.format('$%d\t%s', currentPrice, formatPercent(percent))
+              string.format('$%d\t%s', currentPrice, formatPercent(percent, weight))
             );
           end
         end
@@ -126,15 +126,19 @@ function getSkillShopBuff()
   return 1;
 end
 
-function formatPercent(value)
-  local color = 'EF5D52';
+function formatPercent(value, weight)
+  local color = '6E6E6E';
 
-  if value >= 70 then
-    color = 'EFED62';
-  end
+  if tonumber(weight) > 0 then
+    color = 'EF5D52'
 
-  if value >= 90 then
-    color = '51F079';
+    if value >= 70 then
+      color = 'EFED62';
+    end
+
+    if value >= 90 then
+      color = '51F079';
+    end
   end
 
   return string.format('{%s}%s', color, value) .. '%%';
