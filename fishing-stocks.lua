@@ -62,10 +62,8 @@ function hook.onShowDialog(id, style, title, button, button2, text)
           local u8name = u8:encode(name);
 
           if u8name and PRICE_MAP[u8name] then
-            local shopBuff = getSkillShopBuff();
-            local minPrice = PRICE_MAP[u8name][1] * shopBuff;
-            local maxPrice = PRICE_MAP[u8name][2] * shopBuff;
-            local percent = math.floor(((currentPrice - minPrice) / (maxPrice - minPrice)) * 100);
+            local maxPrice = PRICE_MAP[u8name][2] * getSkillShopBuff();
+            local percent = math.floor(currentPrice / maxPrice * 100);
 
             line = line:gsub(
               '$' .. currentPrice, 
